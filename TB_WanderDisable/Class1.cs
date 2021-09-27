@@ -1,23 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BepInEx;
+using HarmonyLib;
+using Timberborn.WalkingSystem;
 
 namespace TB_WanderDisable
 {
     public class Patcher
     {
-        var harmony = new Harmony("com.example.patch");
-        harmony.PatchAll();
+        public static void DoPatching()
+        {
+            var harmony = new Harmony("com.example.patch");
+            harmony.PatchAll();
+        }
     }
-    [BepInPlugin("org.bepinex.plugins.exampleplugin", "Example Plug-In", "1.0.0.0")]
-    public class ExamplePlugin : BaseUnityPlugin
+
+    [HarmonyPatch(typeof(RandomDestinationPicker), "RandomDestination")]
+    class PatchRandomWalk
+    {
+        static bool Prefix(RandomDestinationPicker __instance, UnityEngine.Vector3 __result, UnityEngine.Vector3 start)
+        {
+            __result = __instance.RandomDestinationNextToPosition(start, 5f, 0.5f);
+            return false;
+        }
+    }
+    [BepInPlugin("org.bepinex.plugins.exampleplugin", "TB Wander Disabler", "1.0.0.0")]
+    public class WD_Plugin : BaseUnityPlugin
     {
         void Awake()
         {
-            UnityEngine.Debug.Log("Hello, world!");
-            MyPatcher.DoPatching();
+            Patcher.DoPatching();
         }
     }
 }
