@@ -8,7 +8,7 @@ namespace TB_WanderDisable
     {
         public static void DoPatching()
         {
-            var harmony = new Harmony("TB_WanderDisable/Procdox/com.github");
+            var harmony = new Harmony("TB_WanderDisable.Procdox.com.github");
             harmony.PatchAll();
         }
     }
@@ -22,7 +22,7 @@ namespace TB_WanderDisable
             return false;
         }
     }
-    [BepInPlugin("TB_WanderDisable/Procdox/com.github", "TB Wander Disabler", "1.0.0.0")]
+    [BepInPlugin("TB_WanderDisable.Procdox.com.github", "TB Wander Disabler", "1.0.0.0")]
     public class WD_Plugin : BaseUnityPlugin
     {
         void Awake()
