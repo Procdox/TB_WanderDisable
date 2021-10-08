@@ -1,6 +1,8 @@
-﻿using BepInEx;
+using BepInEx;
 using HarmonyLib;
 using Timberborn.WalkingSystem;
+using UnityEngine;
+using System.Reflection;
 
 namespace TB_WanderDisable
 {
@@ -18,7 +20,9 @@ namespace TB_WanderDisable
     {
         static bool Prefix(RandomDestinationPicker __instance, UnityEngine.Vector3 __result, UnityEngine.Vector3 start)
         {
-            __result = __instance.RandomDestinationNextToPosition(start, 5f, 0.5f);
+            var methodInfo = typeof(RandomDestinationPicker).GetMethod("RandomDestinationNextToPosition", BindingFlags.NonPublic | BindingFlags.Instance);
+			var parameters = new object[] { start, 5f , 0.5f};
+			__result = (Vector3)methodInfo.Invoke(__instance, parameters);
             return false;
         }
     }
